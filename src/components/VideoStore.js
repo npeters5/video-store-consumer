@@ -5,7 +5,7 @@ import CustomerList from './CustomerList'
 import Selections from './Selections'
 import RentalLibrary from './RentalLibrary'
 import './VideoStore.css';
-
+import SearchForm from './SearchForm'
 
 
 class VideoStore extends Component {
@@ -26,7 +26,6 @@ class VideoStore extends Component {
 
   selectMovie = (movie) => {
     console.log("selecting movie " + movie.title);
-    const customer = this.state.selectedCustomer;
     this.setState({
       selectedMovie: movie,
     });
@@ -43,19 +42,28 @@ class VideoStore extends Component {
   render() {
     const Home = () => (
       <div>
-      <h2>Home</h2>
+        <h2>Home</h2>
       </div>
     );
+
     const Search = () => (
       <div>
-      <RentalLibrary url={this.props.url} selectMovieCallback={this.selectMovie} />
+        <SearchForm
+          url={this.props.url}
+        />
       </div>
     );
+
     const Library = () => (
-      <RentalLibrary url={this.props.url} selectMovieCallback={this.selectMovie} />
+      <div>
+        <RentalLibrary url={this.props.url} selectMovieCallback={this.selectMovie} />
+      </div>
     );
+
     const Customers = () => (
-      <CustomerList url={this.props.url} selectCustomerCallback={this.selectCustomer} />
+      <div>
+        <CustomerList url={this.props.url} selectCustomerCallback={this.selectCustomer} />
+      </div>
     );
 
     return (
