@@ -1,138 +1,114 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import Video from './Video'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import CustomerList from './CustomerList'
 import SearchForm from './SearchForm'
-import Customer from './Customer'
 
 
 class VideoStore extends Component {
-
-  constructor() {
-    super();
-
+  constructor () {
+    super ();
     this.state = {
-      videos: [],
-      customers: [],
-      searchResults: [],
-    };
+      selectedMovie: null,
+      selectedCustomer: null,
+    }
   }
 
-  componentDidMount = () => {
-    console.log("Component did mount was called");
-    axios.get('http://localhost:3001/movies')
-    .then((response) => {
-      console.log(response.data);
-      this.setState({videos: response.data});
-    })
-    .catch((error) => {
-      this.setState({error: error.message});
-    });
-    axios.get('http://localhost:3001/customers')
-    .then((response) => {
-      console.log(response.data);
-      this.setState({customers: response.data});
-    })
-    .catch((error) => {
-      this.setState({error: error.message});
+  selectCustomer = (customer) => {
+    console.log("selecting customer " + customer.name);
+    this.setState({
+      selectedCustomer: customer,
     });
   }
 
-  renderVideoList = () => {
-    const videoList = this.state.videos.map((item, index) => {
-      console.log(item);
-      return (
-        <li key={index}>
-          <Video title={item.title}/>
-        </li>
-      );
-    });
-    return videoList;
-  }
-
-  renderCustomerList = () => {
-    const customerList = this.state.customers.map((item, index) => {
-      console.log(item);
-      return (
-        <li key={index}>
-          <Customer name={item.name}/>
-        </li>
-      );
-    });
-    return customerList;
-  }
-
-  getVideosFromSearch = (searchTerm) => {
-    axios.get('http://localhost:3001/movies?query=' + searchTerm)
-    .then((response) => {
-      console.log(response.data);
-      this.setState({searchResults: response.data});
-    })
-    .catch((error) => {
-      this.setState({error: error.message});
+  selectMovie = (movie) => {
+    console.log("selecting movie " + movie.title);
+    this.setState({
+      selectedMovie: movie,
     });
   }
 
-  renderSearchResults = () => {
-    const results = this.state.searchResults.map((item, index) => {
-      console.log(item);
-      return (
-        <li key={index}>
-          <Video title={item.title}/>
-        </li>
-      );
+  resetSelection = () => {
+    console.log("resetting select data");
+    this.setState({
+      selectedMovie: null,
+      selectedCustomer: null,
     });
-    return results;
   }
 
   render() {
-
     const Home = () => (
       <div>
-        <h2>Home</h2>
+      <h2>Home</h2>
       </div>
     );
     const Search = () => (
       <div>
-        <h2>Search</h2>
         <SearchForm
-          getVideosCallback={this.getVideosFromSearch}
+          url={this.props.url}
         />
-        <ul>
-          {this.renderSearchResults()}
-        </ul>
       </div>
     );
     const Library = () => (
-      <ul>
-        {this.renderVideoList()}
-      </ul>
+      <div>
+        <h2>library</h2>
+      </div>
     );
     const Customers = () => (
-      <ul>
-        {this.renderCustomerList()}
-      </ul>
+      <CustomerList url={this.props.url} selectCustomerCallback={this.selectCustomer} />
     );
 
     return (
       <Router>
-        <div>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/search">Search</Link></li>
-            <li><Link to="/library">Library</Link></li>
-            <li><Link to="/customers">Customers</Link></li>
-          </ul>
-          <hr />
-          <Route exact path="/" component={Home} />
-          <Route exact path="/search" component={Search} />
-          <Route path="/library" component={Library} />
-          <Route path="/customers" component={Customers} />
-        </div>
+      <div>
+      <Route render={() => (
+      <div>
+      <ul>
+      <li>
+      <Link to="/">Home</Link>
+      </li>
+      <li>
+      <Link to="/search">Search</Link>
+      </li>
+      <li>
+      <Link to="/library">Library</Link>
+      </li>
+      <li>
+      <Link to="/customers">Customers</Link>
+      </li>
+      </ul>
+      <hr />
+      <Selections customer={this.state.selectedCustomer} movie={this.state.selectedMovie}/>
+      <div>
+      <button onClick={ (e) => this.resetSelection(e) }>
+      Reset
+      </button>
+      </div>
+      <hr />
+      </div>
+    )} />
+      <Route exact path="/" render={Home} />
+      <Route path="/search" render={Search} />
+      <Route path="/library" render={Library} />
+      <Route path="/customers" render={Customers} />
+      </div>
       </Router>
     );
   }
+}
+
+const Selections = (props) => {
+  const customer = props.customer ? props.customer.name : "None";
+  const movie = props.movie ? props.movie.title : "None";
+  return (
+    <div>
+      <div>Selected Customer: {customer} | Selected Movie: {movie}</div>
+    </div>
+  );
+}
+
+VideoStore.propTypes = {
+  url: PropTypes.string.isRequired,
 }
 
 export default VideoStore;

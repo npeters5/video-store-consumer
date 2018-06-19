@@ -25,4 +25,4 @@ class Video extends Component {
 //
 // };
 
-export default Video;
+export default Video;''
