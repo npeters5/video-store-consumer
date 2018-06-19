@@ -14,9 +14,7 @@ class VideoStore extends Component {
 
   selectCustomer = (customer) => {
     console.log("selecting customer " + customer.name);
-    const movie = this.state.selectedMovie;
     this.setState({
-      selectedMovie: movie,
       selectedCustomer: customer,
     });
   }
@@ -61,6 +59,8 @@ class VideoStore extends Component {
     return (
       <Router>
       <div>
+      <Route render={() => (
+      <div>
       <ul>
       <li>
       <Link to="/">Home</Link>
@@ -77,12 +77,18 @@ class VideoStore extends Component {
       </ul>
       <hr />
       <Selections customer={this.state.selectedCustomer} movie={this.state.selectedMovie}/>
-      <div><button onClick={ (e) => this.resetSelection(e) }>Reset</button></div>
+      <div>
+      <button onClick={ (e) => this.resetSelection(e) }>
+      Reset
+      </button>
+      </div>
       <hr />
-      <Route exact path="/" component={Home} />
-      <Route path="/search" component={Search} />
-      <Route path="/library" component={Library} />
-      <Route path="/customers" component={Customers} />
+      </div>
+    )} />
+      <Route exact path="/" render={Home} />
+      <Route path="/search" render={Search} />
+      <Route path="/library" render={Library} />
+      <Route path="/customers" render={Customers} />
       </div>
       </Router>
     );

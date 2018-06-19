@@ -32,7 +32,6 @@ class CustomerList extends Component {
 
   onClickSelect(e, customer) {
     this.props.selectCustomerCallback(customer);
-    e.preventDefault();
   }
 
   render () {
