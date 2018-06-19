@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CustomerList from './CustomerList'
+import Selections from './Selections'
+import RentalLibrary from './RentalLibrary'
+import './VideoStore.css';
+
+
 
 class VideoStore extends Component {
   constructor () {
@@ -24,7 +29,6 @@ class VideoStore extends Component {
     const customer = this.state.selectedCustomer;
     this.setState({
       selectedMovie: movie,
-      selectedCustomer: customer,
     });
   }
 
@@ -44,13 +48,11 @@ class VideoStore extends Component {
     );
     const Search = () => (
       <div>
-      <h2>search</h2>
+      <RentalLibrary url={this.props.url} selectMovieCallback={this.selectMovie} />
       </div>
     );
     const Library = () => (
-      <div>
-      <h2>library</h2>
-      </div>
+      <RentalLibrary url={this.props.url} selectMovieCallback={this.selectMovie} />
     );
     const Customers = () => (
       <CustomerList url={this.props.url} selectCustomerCallback={this.selectCustomer} />
@@ -93,16 +95,6 @@ class VideoStore extends Component {
       </Router>
     );
   }
-}
-
-const Selections = (props) => {
-  const customer = props.customer ? props.customer.name : "None";
-  const movie = props.movie ? props.movie.title : "None";
-  return (
-    <div>
-      <div>Selected Customer: {customer} | Selected Movie: {movie}</div>
-    </div>
-  );
 }
 
 VideoStore.propTypes = {
