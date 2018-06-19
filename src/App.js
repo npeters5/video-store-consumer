@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import VideoStore from './components/VideoStore'
 
 class App extends Component {
   render() {
     return (
-      <VideoStore url= "http://localhost:3001"/>
+      <VideoStore url="http://localhost:3001"/>
     );
   }
 }

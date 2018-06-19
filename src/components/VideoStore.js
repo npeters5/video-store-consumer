@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import CustomerList from './CustomerList'
 
 class VideoStore extends Component {
   constructor () {
@@ -17,17 +19,23 @@ class VideoStore extends Component {
       selectedMovie: movie,
       selectedCustomer: customer,
     });
-    console.log("current state: " + this.state);
   }
 
   selectMovie = (movie) => {
-    console.log("selecting movie " + movie.name);
-    const customer = this.state.selectCustomer;
+    console.log("selecting movie " + movie.title);
+    const customer = this.state.selectedCustomer;
     this.setState({
       selectedMovie: movie,
       selectedCustomer: customer,
     });
-    console.log("current state: " + this.state);
+  }
+
+  resetSelection = () => {
+    console.log("resetting select data");
+    this.setState({
+      selectedMovie: null,
+      selectedCustomer: null,
+    });
   }
 
   render() {
@@ -47,10 +55,9 @@ class VideoStore extends Component {
       </div>
     );
     const Customers = () => (
-      <div>
-      <h2>library</h2>
-      </div>
+      <CustomerList url={this.props.url} selectCustomerCallback={this.selectCustomer} />
     );
+
     return (
       <Router>
       <div>
@@ -67,11 +74,11 @@ class VideoStore extends Component {
       <li>
       <Link to="/customers">Customers</Link>
       </li>
-
       </ul>
-
       <hr />
-
+      <Selections customer={this.state.selectedCustomer} movie={this.state.selectedMovie}/>
+      <div><button onClick={ (e) => this.resetSelection(e) }>Reset</button></div>
+      <hr />
       <Route exact path="/" component={Home} />
       <Route path="/search" component={Search} />
       <Route path="/library" component={Library} />
@@ -80,6 +87,20 @@ class VideoStore extends Component {
       </Router>
     );
   }
+}
+
+const Selections = (props) => {
+  const customer = props.customer ? props.customer.name : "None";
+  const movie = props.movie ? props.movie.title : "None";
+  return (
+    <div>
+      <div>Selected Customer: {customer} | Selected Movie: {movie}</div>
+    </div>
+  );
+}
+
+VideoStore.propTypes = {
+  url: PropTypes.string.isRequired,
 }
 
 export default VideoStore;
