@@ -42,7 +42,7 @@ class SearchResults extends Component {
     })
     return (
       <div>
-        {results}
+      {results}
       </div>
     );
   }
