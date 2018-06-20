@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import './SearchResults.css';
-import Video from './Video'
+import Movie from './Movie'
 
 class SearchResults extends Component {
 
@@ -33,9 +33,8 @@ class SearchResults extends Component {
     const results = this.props.results.map((video, index) => {
       return (
         <div key={index}>
-          <Video
-            title={video.title}
-            video={video}
+          <Movie
+            movie={video}
           />
           <button onClick={ (e) => this.onClickSelect(e, video) } >
           Add to Library
