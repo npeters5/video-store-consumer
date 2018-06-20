@@ -13,18 +13,11 @@ class SearchResults extends Component {
     axios.post(`${this.props.url}/movies`, video)
     .then((response) => {
       console.log(response);
-    //   video.id = response.data.card.id;
-    //   cards.push({card: card});
-    //   this.setState({
-    //     cards,
-    //     message: `Successfully added card`
-    //   });
-    //   alert( `Successfully added card`)
-    // })
-    // .catch((error) => {
-    //   this.setState({
-    //     message: error.message,
-    //   });
+    })
+    .catch((error) => {
+      this.setState({
+        message: error.message,
+      });
     });
   }
 
@@ -33,18 +26,18 @@ class SearchResults extends Component {
     const results = this.props.results.map((video, index) => {
       return (
         <div key={index}>
-          <Movie
-            movie={video}
-          />
-          <button onClick={ (e) => this.onClickSelect(e, video) } >
-          Add to Library
-          </button>
+        <Movie
+        movie={video}
+        />
+        <button onClick={ (e) => this.onClickSelect(e, video) } >
+        Add to Library
+        </button>
         </div>
       )
     })
     return (
       <div>
-        {results}
+      {results}
       </div>
     );
   }
