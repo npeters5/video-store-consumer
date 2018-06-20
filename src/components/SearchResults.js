@@ -3,41 +3,38 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import './SearchResults.css';
-import Video from './Video'
+import Movie from './Movie'
 
 class SearchResults extends Component {
 
-  onClickSelect(e, video) {
+  onClickSelect(e, movie) {
     console.log(e);
-    console.log(video);
-    axios.post(`${this.props.url}/movies`, video)
+    console.log(movie);
+    axios.post(`${this.props.url}/movies`, movie)
     .then((response) => {
       console.log(response);
-    //   video.id = response.data.card.id;
-    //   cards.push({card: card});
-    //   this.setState({
-    //     cards,
-    //     message: `Successfully added card`
-    //   });
-    //   alert( `Successfully added card`)
-    // })
-    // .catch((error) => {
-    //   this.setState({
-    //     message: error.message,
-    //   });
+      this.setState({
+        message: `Successfully added movie to Library`
+      });
+      alert( `Successfully added ${movie.title} to Library`)
+    })
+    .catch((error) => {
+      this.setState({
+        message: error.message,
+      });
     });
   }
 
   render () {
     console.log(results);
-    const results = this.props.results.map((video, index) => {
+    const results = this.props.results.map((movie, index) => {
       return (
         <div key={index}>
-          <Video
-            title={video.title}
-            video={video}
+          <Movie
+            title={movie.title}
+            movie={movie}
           />
-          <button onClick={ (e) => this.onClickSelect(e, video) } >
+          <button onClick={ (e) => this.onClickSelect(e, movie) } >
           Add to Library
           </button>
         </div>
