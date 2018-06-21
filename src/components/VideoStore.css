@@ -4,3 +4,13 @@ li {
   justify-content: center;
   align-items: center;
 }
+
+.validation-errors-display {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.validation-errors-display__list {
+  list-style-type: none;
+  padding: 0;
+}

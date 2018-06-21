@@ -24,13 +24,16 @@ class SearchForm extends Component {
 
   onFormSubmit = (event) => {
     event.preventDefault();
+    this.props.setStatus(`Searching for "${this.state.title}"...`, 'pending');
+    console.log(`searching for ${this.state.title}`);
     axios.get(`${this.props.url}/movies?query=${this.state.title}`)
     .then((response) => {
+      this.props.setStatus(`Found ${response.data.length} results for ${this.state.title}`, 'success');
       console.log(response.data);
       this.setState({results: response.data});
     })
     .catch((error) => {
-      this.setState({error: error.message});
+      this.props.setStatus(`Could not search for "${this.state.title}": ${error.message}`, 'error');
     });
   }
 
@@ -53,6 +56,7 @@ class SearchForm extends Component {
         <SearchResults
           url={this.props.url}
           results={this.state.results}
+          setStatus={this.props.setStatus}
         />
       </div>
     );

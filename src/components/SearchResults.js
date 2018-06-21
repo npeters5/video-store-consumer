@@ -10,19 +10,17 @@ class SearchResults extends Component {
   onClickSelect(e, movie) {
     console.log(e);
     console.log(movie);
+    this.props.setStatus(`Adding movie "${movie.title}" to library...`, 'pending');
     axios.post(`${this.props.url}/movies`, movie)
     .then((response) => {
       console.log(response);
-      this.setState({
-        message: `Successfully added movie to Library`
-      });
-      alert( `Successfully added ${movie.title} to Library`)
+      this.props.setStatus(`Successfully added "${movie.title}" to library`, 'success');
+      alert(`Successfully added ${movie.title} to Library`)
     })
     .catch((error) => {
-      this.setState({
-        message: error.message,
+      this.props.setStatus(
+        `Could not add "${movie.title}" to library: ${error.message}`, 'error');
       });
-    });
   }
 
   render () {

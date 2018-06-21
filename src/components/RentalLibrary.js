@@ -14,20 +14,20 @@ class RentalLibrary extends Component {
   }
 
   componentDidMount() {
+    this.props.setStatus('Loading library...', 'pending');
     axios.get(`${this.props.url}/movies`)
     .then( (response) => {
+      this.props.setStatus(`Successfully loaded ${response.data.length} movies from the rental library`, 'success');
       console.log( response.data );
       this.setState({
         movies: response.data
       });
     } )
     .catch( (error) => {
+      this.props.setStatus(`Failed to load movies: ${error.message}`, 'success');
       console.log("got to the error");
       console.log(error);
-      this.setState({
-        error: error.message
-      });
-    } );
+    });
   }
 
   onClickSelect(e, movie) {

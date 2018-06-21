@@ -14,19 +14,19 @@ class CustomerList extends Component {
   }
 
   componentDidMount() {
+    this.props.setStatus('Loading customers...', 'pending');
     axios.get(`${this.props.url}/customers`)
     .then( (response) => {
       console.log( response.data );
       this.setState({
         customers: response.data
       });
+      this.props.setStatus(`Loaded ${response.data.length} customers`, 'success');
     } )
     .catch( (error) => {
+      this.props.setStatus(`Failed to load customers: ${error.message}`, 'error');
       console.log("got to the error");
       console.log(error);
-      this.setState({
-        error: error.message
-      });
     } );
   }
 

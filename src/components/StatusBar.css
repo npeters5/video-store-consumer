@@ -1,0 +1,33 @@
+.status-bar {
+  border: 1px solid black;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+}
+
+.status-bar--hide {
+  display: none;
+}
+
+.status-bar--error {
+  background-color: rgb(245, 160, 160);
+}
+
+.status-bar--success {
+  background-color: rgb(123, 249, 108);
+}
+
+.status-bar--pending {
+  background-color: rgb(147, 255, 255)
+}
+
+.status-bar__text {
+  margin: .4em;
+}
+
+.status-bar__button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}

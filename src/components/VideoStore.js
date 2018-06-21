@@ -6,6 +6,7 @@ import Selections from './Selections'
 import RentalLibrary from './RentalLibrary'
 import './VideoStore.css';
 import SearchForm from './SearchForm'
+import StatusBar from './StatusBar'
 import axios from 'axios';
 
 
@@ -15,6 +16,9 @@ class VideoStore extends Component {
     this.state = {
       selectedMovie: null,
       selectedCustomer: null,
+      status: {
+        message: '',
+      }
     }
   }
 
@@ -32,7 +36,17 @@ class VideoStore extends Component {
     });
   }
 
-  resetSelection = (e) => {
+  setStatus = (message, type) => {
+    this.setState({
+      status: { message, type }
+    });
+  }
+
+  clearStatus = () => {
+    this.setState({ status: { message: '' }})
+  }
+
+  resetSelection = () => {
     console.log("resetting select data");
     this.setState({
       selectedMovie: null,
@@ -45,15 +59,16 @@ class VideoStore extends Component {
       let dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + 7);
       axios.post(`${this.props.url}/rentals/${this.state.selectedMovie.title}/check-out?customer_id=${this.state.selectedCustomer.id}&due_date=${dueDate}`)
-      .then(
-        (response) => {
-          console.log(response);
+      .then( (response) => {
+        this.setStatus(
+          `Successfully checked out ${this.state.selectedMovie.title} to ${this.state.selectedCustomer.name}`,
+          'success');
         })
         .catch((error)=> {
-          console.log(error);
-          this.setState({
-            message: error.message
-          });
+          this.setStatus(
+          `Could not check out ${this.state.selectedMovie.title} to ${this.state.selectedCustomer.name}: ${error.message}`,
+          'error');
+          // console.log(error);
         });
       }
     }
@@ -61,68 +76,72 @@ class VideoStore extends Component {
     render() {
       const Home = () => (
         <div>
-        <h2>Home</h2>
+          <h2>Home</h2>
         </div>
       );
 
       const Search = () => (
         <div>
-        <SearchForm
-        url={this.props.url}
-        />
+          <SearchForm
+            url={this.props.url}
+            setStatus={this.setStatus}
+          />
         </div>
       );
 
       const Library = () => (
         <div>
-        <RentalLibrary url={this.props.url} selectMovieCallback={this.selectMovie} />
+          <RentalLibrary
+            url={this.props.url}
+            selectMovieCallback={this.selectMovie}
+            setStatus={this.setStatus}
+          />
         </div>
       );
 
       const Customers = () => (
         <div>
-        <CustomerList url={this.props.url} selectCustomerCallback={this.selectCustomer} />
+          <CustomerList
+            url={this.props.url}
+            selectCustomerCallback={this.selectCustomer}
+            setStatus={this.setStatus}
+          />
         </div>
       );
 
       return (
         <Router>
-        <div>
-        <Route render={() => (
           <div>
-          <ul>
-          <li>
-          <Link to="/">Home</Link>
-          </li>
-          <li>
-          <Link to="/search">Search</Link>
-          </li>
-          <li>
-          <Link to="/library">Library</Link>
-          </li>
-          <li>
-          <Link to="/customers">Customers</Link>
-          </li>
-          </ul>
-          <hr />
-          <Selections customer={this.state.selectedCustomer} movie={this.state.selectedMovie}/>
-          <div>
-          <button onClick={ (e) => this.resetSelection(e) }>
-          Reset
-          </button>
-          <button onClick={ (e) => this.checkoutSelection(e) }>
-          Checkout
-          </button>
-
+            <Route render={() => (
+              <header>
+                <ul>
+                  <li><Link to="/">Home</Link></li>
+                  <li><Link to="/search">Search</Link></li>
+                  <li><Link to="/library">Library</Link></li>
+                  <li><Link to="/customers">Customers</Link></li>
+                </ul>
+                <hr />
+                <Selections customer={this.state.selectedCustomer} movie={this.state.selectedMovie}/>
+                <div>
+                  <button onClick={ (e) => this.resetSelection(e) }>
+                    Reset
+                  </button>
+                  <button onClick={ (e) => this.checkoutSelection(e) }>
+                    Checkout
+                  </button>
+                </div>
+                <hr />
+                <StatusBar
+                  {...this.state.status}
+                  clearStatus={this.clearStatus}
+                />
+              </header>
+            )} />
+            <Route exact path="/" render={Home} />
+            <Route path="/search" render={Search} />
+            <Route path="/library" render={Library} />
+            <Route path="/customers" render={Customers} />
           </div>
-          <hr />
-          </div>
-        )} />
-        <Route exact path="/" render={Home} />
-        <Route path="/search" render={Search} />
-        <Route path="/library" render={Library} />
-        <Route path="/customers" render={Customers} />
-        </div>
         </Router>
       );
     }
