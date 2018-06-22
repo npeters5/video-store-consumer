@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Monoton');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+
 li {
   display: flex;
   flex-direction: row;
@@ -22,4 +25,39 @@ li {
   /*grid-template-columns: repeat(auto-fit, 186px);*/
   grid-column-gap: 25px;
   grid-row-gap: 25px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-container h1 {
+  font-family: 'Monoton', cursive;
+  margin-bottom: 0;
+}
+
+.marquee {
+  font-family: 'Press Start 2P', cursive;
+}
+
+/*img, ul, li {
+  display: flex;
+}*/
+
+.nav-links {
+  color: #CBE9EB;
+  text-shadow: orange 0.1em 0.1em 0.2em;
+  font-weight: bold;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+}
+
+li {
+  padding: 5px;
+  justify-content: center;
 }

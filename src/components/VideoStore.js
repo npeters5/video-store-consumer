@@ -9,6 +9,7 @@ import SearchForm from './SearchForm';
 import StatusBar from './StatusBar';
 import FeaturedFilms from './FeaturedFilms';
 import axios from 'axios';
+import MarqueeDouble from 'react-marquee-double';
 
 
 class VideoStore extends Component {
@@ -121,12 +122,27 @@ class VideoStore extends Component {
           <div>
             <Route render={() => (
               <header>
-                <ul>
-                  <li><Link to="/">Home</Link></li>
-                  <li><Link to="/search">Search</Link></li>
-                  <li><Link to="/library">Library</Link></li>
-                  <li><Link to="/customers">Customers</Link></li>
-                </ul>
+              <MarqueeDouble
+                ref={(ref) => {this.marquee = ref}}
+                step={1} interval={20}
+                autoStart={true}
+                direction={'left'}
+                delay={1000}
+                onStart={()=>{this.marquee.delay()}}>
+                <h1 className="marquee">_______________________________Welcome Online_______________________________</h1>
+              </MarqueeDouble>
+                <div className="flex-container">
+                  <img src="https://media.giphy.com/media/8b29QJQgVwUW4/giphy.gif" height="240"/>
+                  <ul>
+                    <li><h1>Video King</h1></li>
+                    <li><h3>Video rentals on the World Wide Web</h3></li>
+                    <li className="nav-links"><Link to="/">Home</Link></li>
+                    <li className="nav-links"><Link to="/search">Search</Link></li>
+                    <li className="nav-links"><Link to="/library">Library</Link></li>
+                    <li className="nav-links"><Link to="/customers">Customers</Link></li>
+                  </ul>
+                  <img src="https://media.giphy.com/media/l44QvKoQuUD3xPZKg/giphy.gif" height="240"/>
+                </div>
                 <hr />
                 <Selections customer={this.state.selectedCustomer} movie={this.state.selectedMovie}/>
                 <div>
