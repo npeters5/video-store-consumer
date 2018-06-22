@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import CustomerList from './CustomerList'
-import Selections from './Selections'
-import RentalLibrary from './RentalLibrary'
+import CustomerList from './CustomerList';
+import Selections from './Selections';
+import RentalLibrary from './RentalLibrary';
 import './VideoStore.css';
-import SearchForm from './SearchForm'
-import StatusBar from './StatusBar'
+import SearchForm from './SearchForm';
+import StatusBar from './StatusBar';
+import FeaturedFilms from './FeaturedFilms';
 import axios from 'axios';
 
 
@@ -75,9 +76,15 @@ class VideoStore extends Component {
 
     render() {
       const Home = () => (
-        <div>
-          <h2>Home</h2>
-        </div>
+        <section>
+          <h2>Featured Films</h2>
+          <FeaturedFilms
+            className=""
+            url={this.props.url}
+            selectMovieCallback={this.selectMovie}
+            setStatus={this.setStatus}
+          />
+        </section>
       );
 
       const Search = () => (
@@ -124,7 +131,7 @@ class VideoStore extends Component {
                 <Selections customer={this.state.selectedCustomer} movie={this.state.selectedMovie}/>
                 <div>
                   <button onClick={ (e) => this.resetSelection(e) }>
-                    Reset
+                    Reset Selections
                   </button>
                   <button onClick={ (e) => this.checkoutSelection(e) }>
                     Checkout
@@ -141,6 +148,7 @@ class VideoStore extends Component {
             <Route path="/search" render={Search} />
             <Route path="/library" render={Library} />
             <Route path="/customers" render={Customers} />
+
           </div>
         </Router>
       );

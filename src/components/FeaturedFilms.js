@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
-import './RentalLibrary.css';
+import './FeaturedFilms.css';
 import Movie from './Movie'
 
-class RentalLibrary extends Component {
+
+class FeaturedFilms extends Component {
   constructor() {
     super();
     this.state = {
@@ -14,10 +14,8 @@ class RentalLibrary extends Component {
   }
 
   componentDidMount() {
-    this.props.setStatus('Loading library...', 'pending');
     axios.get(`${this.props.url}/movies`)
     .then( (response) => {
-      this.props.setStatus(`Successfully loaded ${response.data.length} movies from the rental library`, 'success');
       console.log( response.data );
       this.setState({
         movies: response.data
@@ -25,8 +23,6 @@ class RentalLibrary extends Component {
     } )
     .catch( (error) => {
       this.props.setStatus(`Failed to load movies: ${error.message}`, 'success');
-      console.log("got to the error");
-      console.log(error);
     });
   }
 
@@ -47,17 +43,19 @@ class RentalLibrary extends Component {
         </div>
       )
     })
+    movies = movies.sort(() => .5 - Math.random());
+    movies = movies.slice(0,3);
     return (
-      <section className="grid-container">
+      <div className="features-container">
         {movies}
-      </section>
+      </div>
     );
   }
 }
 
-RentalLibrary.propTypes = {
-  url: PropTypes.string.isRequired,
-  selectMovieCallback: PropTypes.func.isRequired,
+FeaturedFilms.propTypes = {
+  // url: PropTypes.string.isRequired,
+  // selectMovieCallback: PropTypes.func.isRequired,
 };
 
-export default RentalLibrary;
+export default FeaturedFilms;

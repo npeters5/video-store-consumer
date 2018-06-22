@@ -39,7 +39,7 @@ class CustomerList extends Component {
       return (
         <div key={index}>
         <Customer customer={customer}/>
-        <div><button onClick={ (e) => this.onClickSelect(e, customer) }>Select</button></div>
+        <div><button onClick={ (e) => this.onClickSelect(e, customer) }>Select Customer</button></div>
         </div>
       )
     })

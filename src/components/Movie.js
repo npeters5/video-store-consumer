@@ -6,10 +6,10 @@ const Movie = (props) => {
 
   return (
     <div>
+      <div><img src={props.movie.image_url} alt={props.movie.title}/></div>
       <div>{props.movie.title}</div>
       <div>{props.movie.overview}</div>
       <div>{props.movie.release_date}</div>
-      <div><img src={props.movie.image_url} alt={props.movie.title}/></div>
     </div>
   );
 }

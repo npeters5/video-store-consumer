@@ -14,3 +14,12 @@ li {
   list-style-type: none;
   padding: 0;
 }
+
+.grid-container {
+  display: grid;
+  /*grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));*/
+  grid-template-columns: 1fr 1fr 1fr 1fr (auto-fit, 186px);
+  /*grid-template-columns: repeat(auto-fit, 186px);*/
+  grid-column-gap: 25px;
+  grid-row-gap: 25px;
+}
